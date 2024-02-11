@@ -33,8 +33,9 @@ void Map(char (*map)[20][20]);
 void CreatEnemy(int level, spaceShip *enemyShip);
 void MenuTop(int *level, int helth);
 void MenuBut(string mesesage);
-void ChangePosion(spaceShip *myship,string *error,bullet *myBullet,char (*map)[20][20]);
-void Attack(spaceShip *myShip,bullet *myBullet,char (*map)[20][20]);
+void ChangePosion(spaceShip *myship,spaceShip *enemyShip,string *error,bullet *myBullet,char (*map)[20][20]);
+void Attack(spaceShip *myShip,spaceShip *enemyShip,bullet *myBullet,char (*map)[20][20]);
+bool CheckGame(spaceShip *myShip,spaceShip*enemyShip);
 
 int main()
 {
@@ -43,6 +44,7 @@ int main()
     string error = " ";
     spaceShip myShip,enemyShip;
     bullet myBullet;
+    bool flag=true;
     int level;
     char map[20][20]{' '};
     int choice;
@@ -50,11 +52,13 @@ int main()
     level = LoadFile();
     choice = Menu();
     CreatEnemy(level,&enemyShip);
-    while (true)
+    while (flag)
     {
     CreatMap(&myShip,&enemyShip,&myBullet, &map, choice, &level);
-    ChangePosion(&myShip,&error,&myBullet,&map);
-     choice=0;   
+    ChangePosion(&myShip,&enemyShip,&error,&myBullet,&map);
+    choice=0;   
+    flag = CheckGame(&myShip,&enemyShip);
+    cout<<"heeelsth"<<enemyShip.helth;
     }
     
     return 0;
@@ -123,7 +127,7 @@ void Map(char (*map)[20][20])
     cout<<endl;
 }
 
-void ChangePosion(spaceShip *myship,string *error,bullet *mybullet,char (*map)[20][20])
+void ChangePosion(spaceShip *myship,spaceShip *enemyShip,string *error,bullet *mybullet,char (*map)[20][20])
 {
     char direction = _getch();
     switch (direction)
@@ -138,31 +142,39 @@ void ChangePosion(spaceShip *myship,string *error,bullet *mybullet,char (*map)[2
         break;
     case 'w':
     case 'W':
-        Attack(&(*myship),&(*mybullet),&(*map));
+        Attack(&(*myship),&(*enemyShip),&(*mybullet),&(*map));
     default: // user press wrong key
         *error = "please set your keybord to english or press correct button";
         break;
     }
 }
 
-void Attack(spaceShip *myShip,bullet *myBullet,char (*map)[20][20])
+void Attack(spaceShip *myShip,spaceShip *enemyShip,bullet *myBullet,char (*map)[20][20])
 {
+    bool flag =true;
     (*myBullet).x=(*myShip).x;
     (*myBullet).y=18;
-    while((*myBullet).y>=0)
+    while((*myBullet).y>=0 )
     {
         (*map)[(*myBullet).y][(*myBullet).x]='^';
         Map(&(*map));
         (*map)[(*myBullet).y][(*myBullet).x]=' ';
+        if ((*myBullet).y==(*enemyShip).x)
+        {
+            (*enemyShip).helth-=1;
+            cout<<"check"<<endl;
+            flag=false;
+        }
         (*myBullet).y-=1;
         std::this_thread::sleep_for(std::chrono::milliseconds(400)); // puse to user see map befor refresh
         system("cls");
+        
     }
 }
 
 void CreatMap(spaceShip *myship,spaceShip *enemyShip,bullet *myBullet, char (*map)[20][20], int gameStatus, int *level)
 {
-    system("cls");
+    // system("cls");
     int xe;
     for (int i = 0; i < 20; i++)
     {
@@ -191,8 +203,32 @@ void CreatEnemy(int level, spaceShip *enemyShip)
     if (level == 1)
     {
         (*enemyShip).x=firstposion;
-        (*enemyShip).helth=1;
+        (*enemyShip).helth=2;
     }
+}
+
+bool CheckGame(spaceShip *myShip,spaceShip*enemyShip)
+{
+    bool check=true;
+    if ((*enemyShip).helth==0)
+    {
+        std::cout << "|    ||    |   ____   |      |   |  \n";
+        std::cout << "|    ||    |    |     |--    |   |  \n";
+        std::cout << "|    ||    |    |     |  --  |   |  \n";
+        std::cout << " |  |  |  |     |     |   -- |   \n";
+        std::cout << "  ||    ||     _|_    |      |   O  \n";
+        check=false;
+    }
+    if ((*myShip).helth==0)
+    {
+        cout << "  _____    _____    __      __    ____   ____             ____   ____  \n";
+        cout << " |        |     |  | __    __ |  |      |    |  |     |  |      |    | \n";
+        cout << " |   ___  |_____|  |  __  __  |  |___   |    |   |   |   |____  |____|  \n";
+        cout << " |     |  |     |  |    __    |  |      |    |    | |    |      |     | \n";
+        cout << " |_____|  |     |  |          |  |____  |____|     -     |____  |      | \n";
+        check=false;
+    }
+    return check;
 }
 
 int LoadFile()
