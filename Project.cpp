@@ -1,16 +1,30 @@
 #include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <conio.h> //for getch function that working with keybord
+#define RED_TEXT "\033[1;31m"
+#define Green_TEXT "\033[0;32m"
+#define Yellow_TEXT "\033[0;33m"
+#define White_TEXT "\033[0;37m"
+#define Magenta_TEXT "\033[0;35m"
+#define Cyan_TEXT "\033[0;36m"
+
 
 using namespace std;
-
-void CreatMap(int *shipX, int *shipY, int (*map)[20][20]);
-int Menu();
 
 struct spaceShip
 {
     int x;
     int y;
-    int helth;
+    int helth=3;
 };
+void CreatMap(spaceShip *myship, char (*map)[20][20], int gameStatus, int *level);
+int Menu();
+int LoadFile();
+void CreatEnemy(int level, char (*map)[20][20]);
+void MenuTop(int *level, int helth);
+void MenuBut(string mesesage);
+void ChangePosion(spaceShip *myship,string *error);
 
 int main()
 {
@@ -18,101 +32,91 @@ int main()
 #pragma region varibles
     string error = " ";
     spaceShip myShip;
-    int map[20][20]{};
+    int level;
+    char map[20][20]{' '};
     int choice;
 #pragma endregion
+    level = LoadFile();
     choice = Menu();
-    CreatMap(&myShip.x, &myShip.y, &map);
+    while (true)
+    {
+    CreatMap(&myShip, &map, choice, &level);
+    ChangePosion(&myShip,&error);
+     choice=0;   
+    }
+    
     return 0;
 }
 
 int Menu()
 {
     int chooise;
-    std::cout << "                               ________  _________    /\\         _______ \\            /\\            /     /\\         _______    \n";
+    
+    std::cout <<Green_TEXT<<"                               ________  _________    /\\         _______ \\            /\\            /     /\\         _______    \n";
     std::cout << "                               |             |       /  \\       |       | \\          /  \\          /     /  \\       |       |   \n";
     std::cout << "                               |             |      /    \\      |       |  \\        /    \\        /     /    \\      |       |   \n";
     std::cout << "                               |_______      |     /______\\     |_______|   \\      /      \\      /     /______\\     |_______|       \n";
     std::cout << "                                       |     |    /        \\    |\\           \\    /        \\    /     /        \\    |\\         \n";
     std::cout << "                                       |     |   /          \\   | \\           \\  /          \\  /     /          \\   |  \\     \n";
     std::cout << "                                _______|     |  /            \\  |  \\           \\/            \\/     /            \\  |    \\\n";
-    cout << "                                                                      1- Start New Game" << endl;
+    cout <<Yellow_TEXT<< "                                                                      1- Start New Game" << endl;
     cout << "                                                                      2- Load The Last Game" << endl;
     cout << "                                                                      0-exit" << endl;
     cout << "                                                                      Choose : ";
     cin >> chooise;
+    system("cls");
     return chooise;
 }
 
-void CreatMap(int *shipX, int *shipY, int (*map)[20][20])
+void MenuTop(int *level, int helth)
 {
-    // #pragma region varible
-    //     srand(time(0)); // to make random number
+    cout<<Green_TEXT"                                                                          "<<" LeveL : "<<*level <<" Helth : "<<helth<<endl<<White_TEXT;
 
-    //     int x; // to hold the position of user
-    //     int y; // to hold the position of user
-    //     int ship[2];
-    // #pragma endregion
-    //     // to give a value to indexes of array
-    //     for (int i = 0; i < 10; i++)
-    //     {
+}
 
-    //         for (int j = 0; j < 10; j++)
-    //             *map[i][j] = ' ';
-    //     }
-    //     if (*shipY == -1)
-    //     {
-    //         // to create  spaceships randomly
-    //         for (int i = 0; i <= 10; i++)
-    //         {
+void MenuBut(string mesesage)
+{
+    cout<<Yellow_TEXT"                                              for move your Ship use RightArrow (->) & LeftArrow(<-) for Attack use UperArrow (|) "<<endl<<White_TEXT;
+    cout<<mesesage;
+}
 
-    //             int x = rand() % 10;
-    //             int y = rand() % 10;
+void ChangePosion(spaceShip *myship,string *error)
+{
+    char direction = _getch();
+    switch (direction)
+    {
+    case 'd': // move right
+    case 'D':
+        (*myship).x = (*myship).x + 1;
+        break;
+    case 'a': // move left
+    case 'A':
+        (*myship).x = (*myship).x - 1;
+        break;
+    default: // user press wrong key
+        *error = "please set your keybord to english or press correct button";
+        break;
+    }
+}
 
-    //             if (*map[x][y] == ' ')
-    //             {
-    //                 if (i < 10)
-    //                 {
-    //                     *map[x][y] = '*';
-    //                     enemySpaceshipPosision[0][i] = x;
-    //                     enemySpaceshipPosision[1][i] = y;
-    //                 }
-    //                 else if (i == 10)
-    //                 {
-    //                     spaceship[x][y] = '#';
-    //                     *shipX = x;
-    //                     *shipY = y;
-    //                     x1 = x;
-    //                     y1 = y;
-    //                 }
-    //             }
-    //             else
-    //                 i--; // to restart the process
-    //         }
-    //     }
-    //     else
-    //     {
-
-    //         for (int i = 0; i < 10; i++)
-    //         {
-    //             x = enemySpaceshipPosision[0][i];
-    //             y = enemySpaceshipPosision[1][i];
-    //             if (x == -1 && y == -1)
-    //             {
-
-    //                 spaceship[x][y] = ' ';
-    //             }
-    //             else
-    //                 spaceship[x][y] = '*';
-    //         }
-    //         x = *shipX;
-    //         y = *shipY;
-    //         spaceship[x][y] = '#';
-    //         if (boolet[0] >= 0 && boolet[1] >= 0)
-    //         {
-    //             spaceship[boolet[0]][boolet[1]] = '-';
-    //         }
-    //     }
+void CreatMap(spaceShip *myship, char (*map)[20][20], int gameStatus, int *level)
+{
+    system("cls");
+    for (int i = 0; i < 20; i++)
+    {
+        for (int j = 0; j < 20; j++)
+        {
+            (*map)[i][j] = ' ';
+        }
+    }
+    srand(time(0)); // to make random number
+    if (gameStatus == 1)
+    {
+        (*myship).x = rand() % 20;
+    }
+    (*map)[19][(*myship).x] = '#';
+    CreatEnemy(*level, &(*map));
+    MenuTop(level,myship->helth);
     // to make a table
     for (int i = 0; i < 20; i++)
     {
@@ -120,7 +124,7 @@ void CreatMap(int *shipX, int *shipY, int (*map)[20][20])
 
         for (int j = 0; j < 20; j++)
         {
-            cout << " ---";
+            cout <<Cyan_TEXT " ---";
         }
         cout << endl;
         cout << "                                               ";
@@ -130,7 +134,7 @@ void CreatMap(int *shipX, int *shipY, int (*map)[20][20])
                 cout << "|";
             else
             {
-                cout << "|" << ' ' << ' ' << ' ';
+                cout << "|" << ' ' <<Magenta_TEXT<< (*map)[i][k]<<Cyan_TEXT << ' ';
             }
         }
 
@@ -139,4 +143,24 @@ void CreatMap(int *shipX, int *shipY, int (*map)[20][20])
     cout << "                                               ";
     for (int i = 0; i < 20; i++)
         cout << " ---";
+    cout<<endl;
+    MenuBut(" ");
+}
+
+void CreatEnemy(int level, char (*map)[20][20])
+{
+    // to make random number
+    int firstposion = rand() % 20;
+    if (level == 1)
+    {
+        (*map)[0][firstposion] = '*';
+    }
+}
+
+int LoadFile()
+{
+    string level;
+    ifstream gameText("game.txt");
+    getline(gameText, level);
+    return stoi(level);
 }
