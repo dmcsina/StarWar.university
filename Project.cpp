@@ -58,7 +58,7 @@ int main()
     ChangePosion(&myShip,&enemyShip,&error,&myBullet,&map);
     choice=0;   
     flag = CheckGame(&myShip,&enemyShip);
-    cout<<"heeelsth"<<enemyShip.helth;
+    cout<<"heeelsth"<<enemyShip.y;
     }
     
     return 0;
@@ -135,10 +135,12 @@ void ChangePosion(spaceShip *myship,spaceShip *enemyShip,string *error,bullet *m
     case 'd': // move right
     case 'D':
         (*myship).x = (*myship).x + 1;
+        (*enemyShip).y =(*enemyShip).y+1;
         break;
     case 'a': // move left
     case 'A':
         (*myship).x = (*myship).x - 1;
+        (*enemyShip).y +=1;
         break;
     case 'w':
     case 'W':
@@ -174,7 +176,7 @@ void Attack(spaceShip *myShip,spaceShip *enemyShip,bullet *myBullet,char (*map)[
 
 void CreatMap(spaceShip *myship,spaceShip *enemyShip,bullet *myBullet, char (*map)[20][20], int gameStatus, int *level)
 {
-    // system("cls");
+    system("cls");
     int xe;
     for (int i = 0; i < 20; i++)
     {
@@ -189,7 +191,7 @@ void CreatMap(spaceShip *myship,spaceShip *enemyShip,bullet *myBullet, char (*ma
         (*myship).x = rand() % 20;
     }
     (*map)[19][(*myship).x] = '#';
-    (*map)[0][(*enemyShip).x]='*';
+    (*map)[(*enemyShip).y][(*enemyShip).x]='*';
     
     MenuTop(level,myship->helth);
     Map(&(*map));
@@ -199,16 +201,19 @@ void CreatMap(spaceShip *myship,spaceShip *enemyShip,bullet *myBullet, char (*ma
 void CreatEnemy(int level, spaceShip *enemyShip)
 {
     // to make random number
+    srand(time(0)); // to make random number
     int firstposion = rand() % 20;
     if (level == 1)
     {
         (*enemyShip).x=firstposion;
+        (*enemyShip).y=0;
         (*enemyShip).helth=2;
     }
 }
 
-bool CheckGame(spaceShip *myShip,spaceShip*enemyShip)
+bool CheckGame(spaceShip *myShip,spaceShip *enemyShip)
 {
+    system("cls");
     bool check=true;
     if ((*enemyShip).helth==0)
     {
@@ -219,7 +224,7 @@ bool CheckGame(spaceShip *myShip,spaceShip*enemyShip)
         std::cout << "  ||    ||     _|_    |      |   O  \n";
         check=false;
     }
-    if ((*myShip).helth==0)
+    if ((*myShip).helth==0 ||(*enemyShip).y>19)
     {
         cout << "  _____    _____    __      __    ____   ____             ____   ____  \n";
         cout << " |        |     |  | __    __ |  |      |    |  |     |  |      |    | \n";
@@ -229,6 +234,11 @@ bool CheckGame(spaceShip *myShip,spaceShip*enemyShip)
         check=false;
     }
     return check;
+}
+
+int SaveFile()
+{
+
 }
 
 int LoadFile()
