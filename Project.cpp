@@ -28,12 +28,12 @@ struct bullet
 void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20], int gameStatus, int *level);
 int Menu();
 string LoadFile();
-void SaveFile(spaceShip myShip, spaceShip enemyShip,int level);
+void SaveFile(spaceShip myShip, spaceShip enemyShip, int level);
 void Map(char (*map)[20][20]);
-void CreatEnemy(int level, spaceShip *enemyShip,char (*map)[20][20]);
-void MenuTop(int *level, int helth,int enemyHelth);
+void CreatEnemy(int level, spaceShip *enemyShip, char (*map)[20][20]);
+void MenuTop(int *level, int helth, int enemyHelth);
 void MenuBut(string mesesage);
-void ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *myBullet, char (*map)[20][20],int level);
+void ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *myBullet, char (*map)[20][20], int level);
 void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20]);
 bool CheckGame(spaceShip *myShip, spaceShip *enemyShip);
 void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip);
@@ -46,7 +46,7 @@ int main()
     spaceShip myShip, enemyShip;
     bullet myBullet;
     bool flag = true;
-    int level=4;
+    int level = 4;
     char map[20][20]{' '};
     int choice;
 #pragma endregion
@@ -57,12 +57,12 @@ int main()
         info = LoadFile();
         Prosses(info, &level, &myShip, &enemyShip);
     }
-    CreatEnemy(level, &enemyShip,&map);
+    CreatEnemy(level, &enemyShip, &map);
     // cout<<"level"<<level<<endl<<"XM"<<myShip.x<<endl<<"helth"<<myShip.helth<<endl<<"XE"<<enemyShip.x<<endl<<"YE"<<enemyShip.y<<endl<<"HE"<<enemyShip.helth;
     while (flag)
     {
         CreatMap(&myShip, &enemyShip, &myBullet, &map, choice, &level);
-        ChangePosion(&myShip, &enemyShip, &error, &myBullet, &map,level);
+        ChangePosion(&myShip, &enemyShip, &error, &myBullet, &map, level);
         choice = 0;
         flag = CheckGame(&myShip, &enemyShip);
         cout << "heeelsth" << enemyShip.y;
@@ -91,21 +91,25 @@ int Menu()
     return chooise;
 }
 
-void MenuTop(int *level, int helth,int enemyHelth)
+void MenuTop(int *level, int helth, int enemyHelth)
 {
-    cout << Green_TEXT "                                                                          "<< " LeveL : " << *level << " Helth : " << helth <<" ENEMY HELTH : ";
+    cout << Green_TEXT "                                                                          "
+         << " LeveL : " << *level << " Helth : " << helth << " ENEMY HELTH : ";
     for (int i = 0; i < enemyHelth; i++)
     {
-        cout<<"-";
+        cout << "-";
     }
-    
-    cout<< endl<< White_TEXT;
+
+    cout << endl
+         << White_TEXT;
 }
 
 void MenuBut(string mesesage)
 {
-    cout << Yellow_TEXT "                                              for move your Ship use RightArrow (->) & LeftArrow(<-) for Attack use UperArrow (|) " << endl<< White_TEXT;
-    cout << Yellow_TEXT "                                              for save your game and exit game press 'ESc' Button on your keybord "<< endl<< White_TEXT;
+    cout << Yellow_TEXT "                                              for move your Ship use RightArrow (->) & LeftArrow(<-) for Attack use UperArrow (|) " << endl
+         << White_TEXT;
+    cout << Yellow_TEXT "                                              for save your game and exit game press 'ESc' Button on your keybord " << endl
+         << White_TEXT;
     cout << mesesage;
 }
 
@@ -140,7 +144,7 @@ void Map(char (*map)[20][20])
     cout << endl;
 }
 
-void ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *mybullet, char (*map)[20][20],int level)
+void ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *mybullet, char (*map)[20][20], int level)
 {
     char direction = _getch();
     switch (direction)
@@ -160,7 +164,7 @@ void ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet
         Attack(&(*myship), &(*enemyShip), &(*mybullet), &(*map));
         break;
     case 27:
-        SaveFile((*myship),(*enemyShip),level);
+        SaveFile((*myship), (*enemyShip), level);
         exit(0);
     default: // user press wrong key
         *error = "please set your keybord to english or press correct button";
@@ -173,26 +177,19 @@ void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*ma
     bool flag = true;
     (*myBullet).x = (*myShip).x;
     (*myBullet).y = 18;
-    while (flag==true)
+    while (flag == true)
     {
-        // if ((*map)[(*myBullet).y][(*myBullet).x] = '*')
-        // {
-        //     (*enemyShip).helth -= 1;
-        //     (*myBullet).y+=1;
-        //     flag=false;
-        // }
-        if ((*map)[(*myBullet).y][(*myBullet).x]=='*')
+        if ((*map)[(*myBullet).y][(*myBullet).x] == '*')
         {
             (*enemyShip).helth -= 1;
-            (*myBullet).y+=1;
-            cout<<"sina";
-            flag=false;
+            (*myBullet).y += 1;
+            flag = false;
         }
         (*map)[(*myBullet).y][(*myBullet).x] = '^';
         Map(&(*map));
-            (*map)[(*myBullet).y][(*myBullet).x] = ' ';
+        (*map)[(*myBullet).y][(*myBullet).x] = ' ';
         (*myBullet).y -= 1;
-        std::this_thread::sleep_for(std::chrono::milliseconds(200)); // puse to user see map befor refresh
+        std::this_thread::sleep_for(std::chrono::milliseconds(150)); // puse to user see map befor refresh
         system("cls");
     }
 }
@@ -207,10 +204,8 @@ void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*
         {
             if ((*map)[i][j] != '*')
             {
-            (*map)[i][j] = ' ';
-                
+                (*map)[i][j] = ' ';
             }
-            
         }
     }
 
@@ -219,51 +214,49 @@ void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*
     {
         (*myship).x = rand() % 20;
     }
-    if (gameStatus==2)
+    if (gameStatus == 2)
     {
-       string info = LoadFile();
+        string info = LoadFile();
         Prosses(info, &(*level), &(*myship), &(*enemyShip));
     }
-    
+
     (*map)[19][(*myship).x] = '#';
 
-
-
-    MenuTop(level, (*myship).helth,(*enemyShip).helth);
+    MenuTop(level, (*myship).helth, (*enemyShip).helth);
 
     Map(&(*map));
     MenuBut(" ");
 }
 
-void CreatEnemy(int level, spaceShip *enemyShip,char (*map)[20][20])
+void CreatEnemy(int level, spaceShip *enemyShip, char (*map)[20][20])
 {
     // to make random number
     srand(time(0)); // to make random number
     int firstposion = rand() % 20;
-    
+
     if (level == 1)
     {
         (*enemyShip).helth = 1;
     }
-    if (level ==2)
+    if (level == 2)
     {
-        while (firstposion>19)
+        while (firstposion > 19)
         {
             int firstposion = rand() % 20;
         }
         (*enemyShip).helth = 2;
     }
-    if (level ==3)
+    if (level == 3)
     {
-        while (firstposion>17)
+        while (firstposion > 17)
         {
             int firstposion = rand() % 20;
         }
         (*enemyShip).helth = 4;
     }
-    if (level ==4)
+    if (level == 4)
     {
-        while (firstposion>16)
+        while (firstposion > 16)
         {
             int firstposion = rand() % 20;
         }
@@ -273,14 +266,12 @@ void CreatEnemy(int level, spaceShip *enemyShip,char (*map)[20][20])
     (*enemyShip).y = 0;
     for (int i = 0; i < level; i++)
     {
-        (*map)[0][firstposion+i]='*';
+        (*map)[0][firstposion + i] = '*';
         for (int j = 0; j < level; j++)
         {
-            (*map)[j][firstposion+i]='*';
+            (*map)[j][firstposion + i] = '*';
         }
-        
     }
-    
 }
 
 bool CheckGame(spaceShip *myShip, spaceShip *enemyShip)
@@ -308,23 +299,23 @@ bool CheckGame(spaceShip *myShip, spaceShip *enemyShip)
     return check;
 }
 
-void SaveFile(spaceShip myShip, spaceShip enemyShip,int level)
+void SaveFile(spaceShip myShip, spaceShip enemyShip, int level)
 {
     string info;
-    int number=level;
-        number=number*100;
-        number= myShip.x+number;
-        number=number*10;
-        number+=myShip.helth;
-        number=number*100;
-        number+=enemyShip.x;
-        number=number*100;
-        number+=enemyShip.y;
-        number=number*10;
-        number+=enemyShip.helth;
-    info=to_string(number);
+    int number = level;
+    number = number * 100;
+    number = myShip.x + number;
+    number = number * 10;
+    number += myShip.helth;
+    number = number * 100;
+    number += enemyShip.x;
+    number = number * 100;
+    number += enemyShip.y;
+    number = number * 10;
+    number += enemyShip.helth;
+    info = to_string(number);
     ofstream myFile("game.txt");
-    myFile<<info;
+    myFile << info;
 }
 
 void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip)
