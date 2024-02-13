@@ -62,9 +62,9 @@ int main()
     while (flag)
     {
         CreatMap(&myShip, &enemyShip, &myBullet, &map, choice, &level);
-        // ChangePosion(&myShip, &enemyShip, &error, &myBullet, &map,level);
-        // choice = 0;
-        flag = CheckGame(&myShip, &enemyShip);
+        ChangePosion(&myShip, &enemyShip, &error, &myBullet, &map,level);
+        choice = 0;
+        // flag = CheckGame(&myShip, &enemyShip);
         cout << "heeelsth" << enemyShip.y;
     }
 
@@ -86,7 +86,6 @@ int Menu()
     cout << "                                                                      2- Load The Last Game" << endl;
     cout << "                                                                      0-exit" << endl;
     cout << "                                                                      Choose : ";
-    cout << "❤" ;
     cin >> chooise;
     system("cls");
     return chooise;
@@ -193,7 +192,6 @@ void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*ma
 
 void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20], int gameStatus, int *level)
 {
-    // cout<<"1";
     system("cls");
     int xe;
     for (int i = 0; i < 20; i++)
@@ -214,13 +212,15 @@ void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*
     {
         (*myship).x = rand() % 20;
     }
-    // cout<<"5";
-
+    if (gameStatus==2)
+    {
+       string info = LoadFile();
+        Prosses(info, &(*level), &(*myship), &(*enemyShip));
+    }
+    
     (*map)[19][(*myship).x] = '#';
-    // cout<<"7";
 
-    // (*map)[(*enemyShip).y][(*enemyShip).x] = '*';
-    // cout<<"6";
+
 
     MenuTop(level, (*myship).helth,(*enemyShip).helth);
 
