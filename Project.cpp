@@ -64,7 +64,7 @@ int main()
         CreatMap(&myShip, &enemyShip, &myBullet, &map, choice, &level);
         ChangePosion(&myShip, &enemyShip, &error, &myBullet, &map,level);
         choice = 0;
-        // flag = CheckGame(&myShip, &enemyShip);
+        flag = CheckGame(&myShip, &enemyShip);
         cout << "heeelsth" << enemyShip.y;
     }
 
@@ -173,20 +173,25 @@ void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*ma
     bool flag = true;
     (*myBullet).x = (*myShip).x;
     (*myBullet).y = 18;
-    while ((*myBullet).y >= 0)
+    while (flag==true)
     {
+        // if ((*map)[(*myBullet).y][(*myBullet).x] = '*')
+        // {
+        //     (*enemyShip).helth -= 1;
+        //     (*myBullet).y+=1;
+        //     flag=false;
+        // }
+        if ((*map)[(*myBullet).y][(*myBullet).x]=='*')
+        {
+            // (*map)[(*myBullet).y][(*myBullet).x] = ' ';
+            cout<<"sina";
+            flag=false;
+        }
         (*map)[(*myBullet).y][(*myBullet).x] = '^';
         Map(&(*map));
-        (*map)[(*myBullet).y][(*myBullet).x] = ' ';
-        if ((*myBullet).y == (*enemyShip).x)
-        {
-            (*enemyShip).helth -= 1;
-            cout << "check" << endl;
-            flag = false;
-        }
         (*myBullet).y -= 1;
-        std::this_thread::sleep_for(std::chrono::milliseconds(400)); // puse to user see map befor refresh
-        system("cls");
+        std::this_thread::sleep_for(std::chrono::milliseconds(200)); // puse to user see map befor refresh
+        // system("cls");
     }
 }
 
