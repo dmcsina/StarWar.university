@@ -335,6 +335,18 @@ void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip)
     (*enemyShip).helth = info[8] - '0';
 }
 
+void ChaneEnemyPosion(spaceShip *enemyShip ,char (*map)[20][20],int level)
+{
+    for (int i = 0; i < level; i++)
+    {
+        (*map)[(*enemyShip).x][(*enemyShip).y + i] = '*';
+        for (int j = 0; j < level; j++)
+        {
+            (*map)[(*enemyShip).x][(*enemyShip).y + i] = '*';
+        }
+    }
+}
+
 string LoadFile()
 {
     string info;
