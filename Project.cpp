@@ -269,12 +269,38 @@ bool CheckGame(spaceShip *myShip, spaceShip *enemyShip)
 
 void SaveFile(spaceShip myShip, spaceShip enemyShip,int level)
 {
-   
+    string info;
+    int number=level;
+        number=number*100;
+        number= myShip.x+number;
+        number=number*10;
+        number+=myShip.helth;
+        number=number*100;
+        number+=enemyShip.x;
+        number=number*100;
+        number+=enemyShip.y;
+        number=number*10;
+        number+=enemyShip.helth;
+    info=to_string(number);
+    ofstream myFile("game.txt");
+    myFile<<info;
 }
 
 void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip)
 {
-    
+    int number;
+    *level = (info[0]) - '0';
+    number = info[1] - '0';
+    number = (number * 10) + (info[2] - '0');
+    (*myShip).x = number;
+    (*myShip).helth = info[3] - '0';
+    number = info[4] - '0';
+    number = (number * 10) + (info[5] - '0');
+    (*enemyShip).x = number;
+    number = info[6] - '0';
+    number = (number * 10) + (info[7] - '0');
+    (*enemyShip).y = number;
+    (*enemyShip).helth = info[8] - '0';
 }
 
 string LoadFile()
