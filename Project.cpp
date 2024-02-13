@@ -183,15 +183,17 @@ void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*ma
         // }
         if ((*map)[(*myBullet).y][(*myBullet).x]=='*')
         {
-            // (*map)[(*myBullet).y][(*myBullet).x] = ' ';
+            (*enemyShip).helth -= 1;
+            (*myBullet).y+=1;
             cout<<"sina";
             flag=false;
         }
         (*map)[(*myBullet).y][(*myBullet).x] = '^';
         Map(&(*map));
+            (*map)[(*myBullet).y][(*myBullet).x] = ' ';
         (*myBullet).y -= 1;
         std::this_thread::sleep_for(std::chrono::milliseconds(200)); // puse to user see map befor refresh
-        // system("cls");
+        system("cls");
     }
 }
 
