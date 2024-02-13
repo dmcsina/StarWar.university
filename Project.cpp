@@ -238,7 +238,41 @@ void CreatEnemy(int level, spaceShip *enemyShip,char (*map)[20][20])
     {
         (*enemyShip).helth = 1;
     }
-    
+    if (level ==2)
+    {
+        while (firstposion>19)
+        {
+            int firstposion = rand() % 20;
+        }
+        (*enemyShip).helth = 2;
+    }
+    if (level ==3)
+    {
+        while (firstposion>17)
+        {
+            int firstposion = rand() % 20;
+        }
+        (*enemyShip).helth = 4;
+    }
+    if (level ==4)
+    {
+        while (firstposion>16)
+        {
+            int firstposion = rand() % 20;
+        }
+        (*enemyShip).helth = 6;
+    }
+    (*enemyShip).x = firstposion;
+    (*enemyShip).y = 0;
+    for (int i = 0; i < level; i++)
+    {
+        (*map)[0][firstposion+i]='*';
+        for (int j = 0; j < level; j++)
+        {
+            (*map)[j][firstposion+i]='*';
+        }
+        
+    }
     
 }
 
