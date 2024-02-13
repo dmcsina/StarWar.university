@@ -34,6 +34,7 @@ void CreatEnemy(int level, spaceShip *enemyShip, char (*map)[20][20]);
 void MenuTop(int *level, int helth, int enemyHelth);
 void MenuBut(string mesesage);
 void ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *myBullet, char (*map)[20][20], int level);
+void ChaneEnemyPosion(spaceShip *enemyShip ,char (*map)[20][20],int level);
 void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20]);
 bool CheckGame(spaceShip *myShip, spaceShip *enemyShip);
 void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip);
@@ -152,12 +153,12 @@ void ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet
     case 'd': // move right
     case 'D':
         (*myship).x = (*myship).x + 1;
-        (*enemyShip).y = (*enemyShip).y + 1;
+        ChaneEnemyPosion(&(*enemyShip),&(*map),level);
         break;
     case 'a': // move left
     case 'A':
         (*myship).x = (*myship).x - 1;
-        (*enemyShip).y += 1;
+        ChaneEnemyPosion(&(*enemyShip),&(*map),level);
         break;
     case 'w':
     case 'W':
