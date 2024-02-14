@@ -47,7 +47,7 @@ int main()
     spaceShip myShip, enemyShip;
     bullet myBullet;
     bool flag = true;
-    int level = 4;
+    int level = 2;
     char map[20][20]{' '};
     int choice;
 #pragma endregion
@@ -338,14 +338,37 @@ void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip)
 
 void ChaneEnemyPosion(spaceShip *enemyShip ,char (*map)[20][20],int level)
 {
-    for (int i = 0; i < level; i++)
+    int counter=0;
+    for (int i = 0; i < 19; i++)
     {
-        (*map)[(*enemyShip).x][(*enemyShip).y + i] = '*';
-        for (int j = 0; j < level; j++)
+        for (int j = 0; j < 19; j++)
         {
-            (*map)[(*enemyShip).x][(*enemyShip).y + i] = '*';
+            if ((*map)[i][j]=='*')
+            {
+                (*map)[i][j]=' ';
+                (*map)[i+1][j]='*';
+                counter++;
+            }
+            if (counter==(level*level))
+            {
+                break;
+            }
+            
         }
+        if (counter==(level*level))
+            {
+                break;
+            }
     }
+    
+    // for (int i = 0; i < level; i++)
+    // {
+    //     (*map)[(*enemyShip).x][(*enemyShip).y + i] = '*';
+    //     for (int j = 0; j < level; j++)
+    //     {
+    //         (*map)[(*enemyShip).x][(*enemyShip).y + i] = '*';
+    //     }
+    // }
 }
 
 string LoadFile()
