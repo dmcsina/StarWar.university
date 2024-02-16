@@ -36,18 +36,19 @@ void MenuBut(string mesesage);
 void ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *myBullet, char (*map)[20][20], int level);
 void ChaneEnemyPosion(char (*map)[20][20],int level);
 void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20]);
-bool CheckGame(spaceShip *myShip, spaceShip *enemyShip);
+bool CheckGame(spaceShip *myShip, spaceShip *enemyShip , int level);
 void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip);
 bool Checkposion(int *myShipX , string *error);
+void CheckLevel(int level);
+
 int main()
 {
-
 #pragma region varibles
     string error = "Sina ", info;
     spaceShip myShip, enemyShip;
     bullet myBullet;
     bool flag = true;
-    int level = 3;
+    int level = 1;
     char map[20][20]{' '};
     int choice;
 #pragma endregion
@@ -65,7 +66,7 @@ int main()
         CreatMap(&myShip, &enemyShip, &myBullet, &map, choice, &level ,&error);
         ChangePosion(&myShip, &enemyShip, &error, &myBullet, &map, level);
         choice = 0;
-        flag = CheckGame(&myShip, &enemyShip);
+        flag = CheckGame(&myShip, &enemyShip ,level);
         cout << "heeelsth" << enemyShip.y;
     }
 
@@ -111,7 +112,7 @@ void MenuBut(string mesesage)
          << White_TEXT;
     cout << Yellow_TEXT "                                              for save your game and exit game press 'ESc' Button on your keybord " << endl
          << White_TEXT;
-    cout <<RED_TEXT<<"                                                           "<< mesesage<<White_TEXT;
+    cout <<RED_TEXT<<"                                                                        "<< mesesage<<White_TEXT;
 }
 
 void Map(char (*map)[20][20])
@@ -328,11 +329,25 @@ bool Checkposion(int *myShipX, string *error)
     
 }
 
-bool CheckGame(spaceShip *myShip, spaceShip *enemyShip)
+void CheckLevel(int *level, int enemyHelth)
+{
+    if ((*level)<4)
+    {
+       if (enemyHelth==0)
+       {
+            (*level)++;
+            CreatEnemy
+       }
+       
+    }
+    
+}
+
+bool CheckGame(spaceShip *myShip, spaceShip *enemyShip ,int level )
 {
     system("cls");
     bool check = true;
-    if ((*enemyShip).helth == 0)
+    if ((*enemyShip).helth == 0 & level==4)
     {
         std::cout << "|    ||    |   ____   |      |   |  \n";
         std::cout << "|    ||    |    |     |--    |   |  \n";
@@ -341,7 +356,7 @@ bool CheckGame(spaceShip *myShip, spaceShip *enemyShip)
         std::cout << "  ||    ||     _|_    |      |   O  \n";
         check = false;
     }
-    if ((*myShip).helth == 0 || (*enemyShip).y > 19)
+    if ((*myShip).helth == 0)
     {
         cout << "  _____    _____    __      __    ____   ____             ____   ____  \n";
         cout << " |        |     |  | __    __ |  |      |    |  |     |  |      |    | \n";
@@ -388,7 +403,6 @@ void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip)
     (*enemyShip).y = number;
     (*enemyShip).helth = info[8] - '0';
 }
-
 
 string LoadFile()
 {
