@@ -38,7 +38,7 @@ void ChaneEnemyPosion(char (*map)[20][20],int level);
 void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20]);
 bool CheckGame(spaceShip *myShip, spaceShip *enemyShip);
 void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip);
-
+bool Checkposion(spaceShip *myShip, spaceShip *enemyShip);
 int main()
 {
 
@@ -152,6 +152,11 @@ void ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet
     {
     case 'd': // move right
     case 'D':
+    if (Checkposion())
+    {
+        /* code */
+    }
+    
         (*myship).x = (*myship).x + 1;
         ChaneEnemyPosion(&(*map),level);
         break;
@@ -171,6 +176,7 @@ void ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet
         *error = "please set your keybord to english or press correct button";
         break;
     }
+
 }
 
 void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20])
@@ -275,6 +281,43 @@ void CreatEnemy(int level, spaceShip *enemyShip, char (*map)[20][20])
     }
 }
 
+void ChaneEnemyPosion(char (*map)[20][20],int level)
+{
+    int counter=0;
+    for (int i = 0; i < 19; i++)
+    {
+        for (int j = 0; j < 19; j++)
+        {
+            if ((*map)[i][j]=='*')
+            {
+                (*map)[i][j]=' ';
+                (*map)[i+level][j]='*';
+                counter++;
+            }
+            if (counter==(level))
+            {
+                break;
+            }
+            
+        }
+    }
+    
+}
+
+bool Checkposion(int myShipX, int enemyShipy)
+{
+    if (myShipX>19)
+    {
+        return false;
+    }
+    if (myShipX<0)
+    {
+        return false;
+    }
+    return true;
+    
+}
+
 bool CheckGame(spaceShip *myShip, spaceShip *enemyShip)
 {
     system("cls");
@@ -336,28 +379,6 @@ void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip)
     (*enemyShip).helth = info[8] - '0';
 }
 
-void ChaneEnemyPosion(char (*map)[20][20],int level)
-{
-    int counter=0;
-    for (int i = 0; i < 19; i++)
-    {
-        for (int j = 0; j < 19; j++)
-        {
-            if ((*map)[i][j]=='*')
-            {
-                (*map)[i][j]=' ';
-                (*map)[i+level][j]='*';
-                counter++;
-            }
-            if (counter==(level))
-            {
-                break;
-            }
-            
-        }
-    }
-    
-}
 
 string LoadFile()
 {
