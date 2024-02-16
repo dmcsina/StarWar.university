@@ -39,7 +39,7 @@ void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*ma
 bool CheckGame(spaceShip *myShip, spaceShip *enemyShip , int level);
 void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip);
 bool Checkposion(int *myShipX , string *error);
-void CheckLevel(int level);
+void CheckLevel(int *level, spaceShip *enemyShip, char (*map)[20][20]);
 
 int main()
 {
@@ -63,6 +63,7 @@ int main()
     // cout<<"level"<<level<<endl<<"XM"<<myShip.x<<endl<<"helth"<<myShip.helth<<endl<<"XE"<<enemyShip.x<<endl<<"YE"<<enemyShip.y<<endl<<"HE"<<enemyShip.helth;
     while (flag)
     {
+        CheckLevel(&level,&enemyShip, &map);
         CreatMap(&myShip, &enemyShip, &myBullet, &map, choice, &level ,&error);
         ChangePosion(&myShip, &enemyShip, &error, &myBullet, &map, level);
         choice = 0;
@@ -329,16 +330,28 @@ bool Checkposion(int *myShipX, string *error)
     
 }
 
-void CheckLevel(int *level, int enemyHelth)
+void CheckLevel(int *level, spaceShip *enemyShip, char (*map)[20][20])
 {
     if ((*level)<4)
     {
-       if (enemyHelth==0)
+       if ((*enemyShip).helth==0)
        {
             (*level)++;
-            CreatEnemy
+            for (int i = 0; i < 19; i++)
+            {
+                for (int j = 0; j < 19; j++)
+                {
+                    if ((*map)[i][j]=='*')
+                    {
+                        (*map)[i][j]=' ';
+                    }
+                    
+                }
+                
+            }
+            
+            CreatEnemy(*level,&(*enemyShip),&(*map));
        }
-       
     }
     
 }
