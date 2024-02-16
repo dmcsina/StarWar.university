@@ -47,7 +47,7 @@ int main()
     spaceShip myShip, enemyShip;
     bullet myBullet;
     bool flag = true;
-    int level = 2;
+    int level = 3;
     char map[20][20]{' '};
     int choice;
 #pragma endregion
@@ -346,27 +346,27 @@ void ChaneEnemyPosion(spaceShip *enemyShip ,char (*map)[20][20],int level)
             if ((*map)[i][j]=='*')
             {
                 (*map)[i][j]=' ';
-                (*map)[i+1][j]='*';
+                (*map)[i+level][j]='*';
                 counter++;
             }
-            if (counter==(level*level))
+            if (counter==(level))
             {
                 break;
             }
             
         }
-        if (counter==(level*level))
-            {
-                break;
-            }
+        // if (counter==(level*level))
+        //     {
+        //         break;
+        //     }
     }
-    
+    // (*enemyShip).x+=1;
     // for (int i = 0; i < level; i++)
     // {
-    //     (*map)[(*enemyShip).x][(*enemyShip).y + i] = '*';
+    //     (*map)[(*enemyShip).x+i][(*enemyShip).y ] = '*';
     //     for (int j = 0; j < level; j++)
     //     {
-    //         (*map)[(*enemyShip).x][(*enemyShip).y + i] = '*';
+    //         (*map)[(*enemyShip).x][(*enemyShip).y+j] = '*';
     //     }
     // }
 }
