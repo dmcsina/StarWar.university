@@ -38,7 +38,7 @@ void ChaneEnemyPosion(char (*map)[20][20],int level);
 void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20]);
 bool CheckGame(spaceShip *myShip, spaceShip *enemyShip);
 void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip);
-bool Checkposion(spaceShip *myShip, spaceShip *enemyShip);
+bool Checkposion(int *myShipX);
 int main()
 {
 
@@ -152,18 +152,20 @@ void ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet
     {
     case 'd': // move right
     case 'D':
-    if (Checkposion())
+    if (Checkposion(&((*myship).x)))
     {
-        /* code */
+        (*myship).x = (*myship).x + 1;        
+        ChaneEnemyPosion(&(*map),level);
     }
     
-        (*myship).x = (*myship).x + 1;
-        ChaneEnemyPosion(&(*map),level);
         break;
     case 'a': // move left
     case 'A':
+    if (Checkposion(&((*myship).x)))
+    {
         (*myship).x = (*myship).x - 1;
         ChaneEnemyPosion(&(*map),level);
+    }
         break;
     case 'w':
     case 'W':
@@ -304,14 +306,16 @@ void ChaneEnemyPosion(char (*map)[20][20],int level)
     
 }
 
-bool Checkposion(int myShipX, int enemyShipy)
+bool Checkposion(int *myShipX)
 {
-    if (myShipX>19)
+    if (*myShipX>=19)
     {
+        *myShipX-=1;
         return false;
     }
-    if (myShipX<0)
+    if (*myShipX<=0)
     {
+        *myShipX+=1;
         return false;
     }
     return true;
