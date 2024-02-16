@@ -43,7 +43,7 @@ int main()
 {
 
 #pragma region varibles
-    string error = "Sina", info;
+    string error = "Sina ", info;
     spaceShip myShip, enemyShip;
     bullet myBullet;
     bool flag = true;
