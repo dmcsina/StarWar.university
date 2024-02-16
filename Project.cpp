@@ -25,7 +25,7 @@ struct bullet
     int damege = 1;
 };
 
-void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20], int gameStatus, int *level);
+void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20], int gameStatus, int *level,string *error);
 int Menu();
 string LoadFile();
 void SaveFile(spaceShip myShip, spaceShip enemyShip, int level);
@@ -43,7 +43,7 @@ int main()
 {
 
 #pragma region varibles
-    string error = " ", info;
+    string error = "Sina", info;
     spaceShip myShip, enemyShip;
     bullet myBullet;
     bool flag = true;
@@ -62,7 +62,7 @@ int main()
     // cout<<"level"<<level<<endl<<"XM"<<myShip.x<<endl<<"helth"<<myShip.helth<<endl<<"XE"<<enemyShip.x<<endl<<"YE"<<enemyShip.y<<endl<<"HE"<<enemyShip.helth;
     while (flag)
     {
-        CreatMap(&myShip, &enemyShip, &myBullet, &map, choice, &level);
+        CreatMap(&myShip, &enemyShip, &myBullet, &map, choice, &level ,&error);
         ChangePosion(&myShip, &enemyShip, &error, &myBullet, &map, level);
         choice = 0;
         flag = CheckGame(&myShip, &enemyShip);
@@ -111,7 +111,7 @@ void MenuBut(string mesesage)
          << White_TEXT;
     cout << Yellow_TEXT "                                              for save your game and exit game press 'ESc' Button on your keybord " << endl
          << White_TEXT;
-    cout << mesesage;
+    cout <<RED_TEXT<<"                                                           "<< mesesage<<White_TEXT;
 }
 
 void Map(char (*map)[20][20])
@@ -203,7 +203,7 @@ void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*ma
     }
 }
 
-void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20], int gameStatus, int *level)
+void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20], int gameStatus, int *level,string *error)
 {
     system("cls");
     int xe;
@@ -234,7 +234,7 @@ void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*
     MenuTop(level, (*myship).helth, (*enemyShip).helth);
 
     Map(&(*map));
-    MenuBut(" ");
+    MenuBut(*error);
 }
 
 void CreatEnemy(int level, spaceShip *enemyShip, char (*map)[20][20])
