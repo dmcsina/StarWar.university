@@ -38,7 +38,7 @@ void ChaneEnemyPosion(char (*map)[20][20],int level);
 void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20]);
 bool CheckGame(spaceShip *myShip, spaceShip *enemyShip);
 void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip);
-bool Checkposion(int *myShipX);
+bool Checkposion(int *myShipX , string *error);
 int main()
 {
 
@@ -147,12 +147,13 @@ void Map(char (*map)[20][20])
 
 void ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *mybullet, char (*map)[20][20], int level)
 {
+    *error = " ";
     char direction = _getch();
     switch (direction)
     {
     case 'd': // move right
     case 'D':
-    if (Checkposion(&((*myship).x)))
+    if (Checkposion(&((*myship).x), &(*error)))
     {
         (*myship).x = (*myship).x + 1;        
         ChaneEnemyPosion(&(*map),level);
@@ -161,7 +162,7 @@ void ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet
         break;
     case 'a': // move left
     case 'A':
-    if (Checkposion(&((*myship).x)))
+    if (Checkposion(&((*myship).x), &(*error)))
     {
         (*myship).x = (*myship).x - 1;
         ChaneEnemyPosion(&(*map),level);
@@ -173,6 +174,8 @@ void ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet
         break;
     case 27:
         SaveFile((*myship), (*enemyShip), level);
+        *error = " your game is saved ";
+        std::this_thread::sleep_for(std::chrono::milliseconds(1500)); 
         exit(0);
     default: // user press wrong key
         *error = "please set your keybord to english or press correct button";
@@ -306,16 +309,19 @@ void ChaneEnemyPosion(char (*map)[20][20],int level)
     
 }
 
-bool Checkposion(int *myShipX)
+bool Checkposion(int *myShipX, string *error)
 {
     if (*myShipX>=19)
     {
         *myShipX-=1;
+        *error=" You Can't Go LEFT Anymore";
         return false;
     }
     if (*myShipX<=0)
     {
         *myShipX+=1;
+        *error=" You Can't Go RIGHT Anymore";
+
         return false;
     }
     return true;
