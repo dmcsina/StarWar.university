@@ -314,13 +314,13 @@ bool Checkposion(int *myShipX, string *error)
     if (*myShipX>=19)
     {
         *myShipX-=1;
-        *error=" You Can't Go LEFT Anymore";
+        *error=" You Can't Go RIGHT Anymore";
         return false;
     }
     if (*myShipX<=0)
     {
         *myShipX+=1;
-        *error=" You Can't Go RIGHT Anymore";
+        *error=" You Can't Go LEFT Anymore";
 
         return false;
     }
