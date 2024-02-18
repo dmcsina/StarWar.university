@@ -155,7 +155,35 @@ void Map(char (*map)[20][20])
     cout << endl;
 }
 
-
+spaceShip CreatMyShip(int score)
+{
+    spaceShip myShip;
+    if(score==0)
+    {
+    srand(time(0));
+        myShip.x=rand()%19;
+        myShip.y = 19;
+        myShip.helth = 3;
+        myShip.damege = 1;
+        myShip.name = "jonior";
+    }
+    if(score>15)
+    {
+        myShip.helth = 4;
+        myShip.damege = 2;
+        myShip.name = "vice captain";
+        myShip.y = 19;
+    }
+    if(score>20)
+    {
+        myShip.helth = 5;
+        myShip.damege = 3;
+        myShip.name = "captain";
+        myShip.y = 19;
+    }
+    
+    return myShip;
+}
 
 void ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *mybullet, char (*map)[20][20], int level)
 {
