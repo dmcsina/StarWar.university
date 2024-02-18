@@ -330,9 +330,17 @@ void CreatEnemy(int level, spaceShip *enemyShip, char (*map)[20][20],int score)
 {
     // to make random number
     srand(time(0)); // to make random number
-    int firstposion = rand() % 20;
-    int randEnemy=rand()%4;
-
+    int firstposion = rand() % 19+2;
+    int randEnemy=rand()%4 + 1;
+    // do
+    // {
+    //     randEnemy=rand()%5;
+    // } while (randEnemy<0);
+    // do
+    // {
+    //     firstposion = rand() % 20;
+    // } while (firstposion >2);
+    
     if (randEnemy == 1 )
     {
         (*enemyShip).helth = 1;
@@ -420,6 +428,16 @@ void ChaneEnemyPosion(char (*map)[20][20],string name)
             
         }
     }
+    // for (int i = 0; i < 20; i++)
+    // {
+        
+    //     if ((*map)[0][i]='*')
+    //     {
+    //         /* code */
+    //     }
+        
+    // }
+    
     
 }
 
