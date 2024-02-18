@@ -53,8 +53,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/Novin SOft/Desktop/پروژه",
-      "program": "c:/Users/Novin SOft/Desktop/پروژه/build/Debug/outDebug",
+      "cwd": "c:/Users/sina/Desktop/Final project/StarWar.university",
+      "program": "c:/Users/sina/Desktop/Final project/StarWar.university/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
