@@ -193,26 +193,30 @@ void ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet
     {
     case 'd': // move right
     case 'D':
+    {
+        Attack(&(*myship), &(*enemyShip), &(*mybullet), &(*map));
     if (Checkposion(&((*myship).x), &(*error)))
     {
-        (*myship).x = (*myship).x + 1;        
+        (*myship).x += 1;        
         ChaneEnemyPosion(&(*map),(*enemyShip).name);
     }
-        Attack(&(*myship), &(*enemyShip), &(*mybullet), &(*map));
-    
+    }
         break;
     case 'a': // move left
     case 'A':
+    {
+        Attack(&(*myship), &(*enemyShip), &(*mybullet), &(*map));
     if (Checkposion(&((*myship).x), &(*error)))
     {
         (*myship).x = (*myship).x - 1;
         ChaneEnemyPosion(&(*map),(*enemyShip).name);
     }
-        Attack(&(*myship), &(*enemyShip), &(*mybullet), &(*map));
-        break;
+    }break;
+    
     case 'w':
     case 'W':
         Attack(&(*myship), &(*enemyShip), &(*mybullet), &(*map));
+        ChaneEnemyPosion(&(*map),(*enemyShip).name);
         break;
     case 27:
         SaveFile((*myship), (*enemyShip), level);
@@ -239,9 +243,9 @@ void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*ma
         //     (*myBullet).y += 1;
         //     flag = false;
         // }
-        for (int i = 0; i < 19; i++)
+        for (int i = 0; i < 20; i++)
         {
-            for (int j = 0; j < 19; j++)
+            for (int j = 0; j < 20; j++)
             {
                 if (i==0)
                 {
@@ -399,9 +403,9 @@ void ChaneEnemyPosion(char (*map)[20][20],string name)
     
     
     int counter=0;
-    for (int i = 0; i < 19; i++)
+    for (int i = 0; i < 20; i++)
     {
-        for (int j = 0; j < 19; j++)
+        for (int j = 0; j < 20; j++)
         {
             if ((*map)[i][j]=='*')
             {
