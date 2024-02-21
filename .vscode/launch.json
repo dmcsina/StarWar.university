@@ -53,8 +53,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/Novin SOft/Desktop/پروژه",
-      "program": "c:/Users/Novin SOft/Desktop/پروژه/build/Debug/outDebug",
+      "cwd": "c:/Users/Novin SOft/Desktop/Final project/پروژه",
+      "program": "c:/Users/Novin SOft/Desktop/Final project/پروژه/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
