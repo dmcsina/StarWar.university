@@ -33,21 +33,22 @@ int Menu();
 string LoadFile();
 void SaveFile(spaceShip myShip, spaceShip enemyShip, int level);
 void Map(char (*map)[20][20]);
-void CreatEnemy(int level, spaceShip *enemyShip, char (*map)[20][20], int score);
+void CreatEnemy(int level, spaceShip *enemyShip, char (*map)[20][20], int score, int hardness);
 void MenuTop(int *level, int helth, int enemyHelth, int score);
 void MenuBut(string mesesage);
-bool ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *myBullet, char (*map)[20][20], int level,vector <string> history);
+bool ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *myBullet, char (*map)[20][20], int level, vector<string> history);
 void ChaneEnemyPosion(char (*map)[20][20], string name);
 void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20]);
 bool CheckGame(spaceShip *myShip, spaceShip *enemyShip, int level);
 void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip);
 bool Checkposion(int *myShipX, string *error);
-void CheckLevel(int *level, spaceShip *enemyShip, char (*map)[20][20], int *score, spaceShip *myship,vector <string> *history);
+void CheckLevel(int *level, spaceShip *enemyShip, char (*map)[20][20], int *score, spaceShip *myship, vector<string> *history,int hardness);
 void Low_offHelth(spaceShip *enemyShip, char (*map)[20][20]);
 spaceShip CreatMyShip(int score);
-void SaveGameHistory(vector <string> *history,string name);
-void ShowGameHistory(vector <string> history);
-void SaveFilehistory(int level,int score ,int heal );
+int DifficultyMenu();
+void SaveGameHistory(vector<string> *history, string name);
+void ShowGameHistory(vector<string> history);
+void SaveFilehistory(int level, int score, int heal);
 // void CheckShip(spaceShip *myShip);
 
 int main()
@@ -61,38 +62,41 @@ int main()
     char map[20][20]{' '};
     int choice, score = 0;
     int x = 0;
-    vector <string> history(100," ");
-
+    vector<string> history(100, " ");
+    int hardness;
 #pragma endregion
     while (true)
     {
         flag = true;
-    choice = Menu();
-    if (choice == 2)
-    {
-        info = LoadFile();
-        Prosses(info, &level, &myShip, &enemyShip);
-    }
-    CreatEnemy(level, &enemyShip, &map, score);
-    myShip = CreatMyShip(score);
-    // cout<<"level"<<level<<endl<<"XM"<<myShip.x<<endl<<"helth"<<myShip.helth<<endl<<"XE"<<enemyShip.x<<endl<<"YE"<<enemyShip.y<<endl<<"HE"<<enemyShip.helth;
-    while (flag)
-    {
-        CheckLevel(&level, &enemyShip, &map, &score, &myShip,&history);
-        CreatMap(&myShip, &enemyShip, &myBullet, &map, choice, &level, &error, &score, &x);
-        flag =ChangePosion(&myShip, &enemyShip, &error, &myBullet, &map, level,history);
-        if (flag==false)
+        choice = Menu();
+        if (choice == 1)
         {
-            break;
+            hardness = DifficultyMenu();
         }
-        
-        choice = 0;
-        flag = CheckGame(&myShip, &enemyShip, level);
-        cout << "heeelsth" << myShip.helth;
+
+        if (choice == 2)
+        {
+            info = LoadFile();
+            Prosses(info, &level, &myShip, &enemyShip);
+        }
+        CreatEnemy(level, &enemyShip, &map, score, hardness);
+        myShip = CreatMyShip(score);
+        // cout<<"level"<<level<<endl<<"XM"<<myShip.x<<endl<<"helth"<<myShip.helth<<endl<<"XE"<<enemyShip.x<<endl<<"YE"<<enemyShip.y<<endl<<"HE"<<enemyShip.helth;
+        while (flag)
+        {
+            CheckLevel(&level, &enemyShip, &map, &score, &myShip, &history,hardness);
+            CreatMap(&myShip, &enemyShip, &myBullet, &map, choice, &level, &error, &score, &x);
+            flag = ChangePosion(&myShip, &enemyShip, &error, &myBullet, &map, level, history);
+            if (flag == false)
+            {
+                break;
+            }
+
+            choice = 0;
+            flag = CheckGame(&myShip, &enemyShip, level);
+            cout << "heeelsth" << myShip.helth;
+        }
     }
-        
-    }
-    
 
     return 0;
 }
@@ -101,20 +105,34 @@ int Menu()
 {
     int chooise;
     system("cls");
-    std::cout << Green_TEXT << "                           ________  _________    /\\         _______ \\            /\\            /     /\\         _______    \n";
-    std::cout << "                           |             |       /  \\       |       | \\          /  \\          /     /  \\       |       |   \n";
-    std::cout << "                           |             |      /    \\      |       |  \\        /    \\        /     /    \\      |       |   \n";
-    std::cout << "                           |_______      |     /______\\     |_______|   \\      /      \\      /     /______\\     |_______|       \n";
-    std::cout << "                                   |     |    /        \\    |\\           \\    /        \\    /     /        \\    |\\         \n";
-    std::cout << "                                   |     |   /          \\   | \\           \\  /          \\  /     /          \\   |  \\     \n";
-    std::cout << "                            _______|     |  /            \\  |  \\           \\/            \\/     /            \\  |    \\\n";
-    cout << Yellow_TEXT << "                                                                      1- Start New Game" << endl;
-    cout << "                                                                      2- Load The Last Game" << endl;
-    cout << "                                                                      0-Exit " << endl;
-    cout << "                                                                      Choose : ";
+    std::cout << Green_TEXT << "                                     ________  _________    /\\         _______ \\            /\\            /     /\\         _______    \n";
+    std::cout << "                                     |             |       /  \\       |       | \\          /  \\          /     /  \\       |       |   \n";
+    std::cout << "                                     |             |      /    \\      |       |  \\        /    \\        /     /    \\      |       |   \n";
+    std::cout << "                                     |_______      |     /______\\     |_______|   \\      /      \\      /     /______\\     |_______|       \n";
+    std::cout << "                                             |     |    /        \\    |\\           \\    /        \\    /     /        \\    |\\         \n";
+    std::cout << "                                             |     |   /          \\   | \\           \\  /          \\  /     /          \\   |  \\     \n";
+    std::cout << "                                      _______|     |  /            \\  |  \\           \\/            \\/     /            \\  |    \\\n";
+    cout << Yellow_TEXT << "                                                                     ------------------------" << endl;
+    cout << "                                                                     |  1- Start New Game    |" << endl;
+    cout << "                                                                     | 2- Load The Last Game |" << endl;
+    cout << "                                                                     | 0-Exit                |" << endl;
+    cout << "                                                                     | Choose :              |" << endl;
+    cout << "                                                                     ------------------------" << endl;
     cin >> chooise;
     system("cls");
     return chooise;
+}
+
+int DifficultyMenu()
+{
+    int hardness;
+    cout << "                                                                                -------------------------------" << endl;
+    cout << "                                                                                | choose difficulty of game : |" << endl;
+    cout << "                                                                                | 1-Easy (Spwan One enemy)    |" << endl;
+    cout << "                                                                                | 1-Hard (Spawn two enemy)    |" << endl;
+    cout << "                                                                                -------------------------------" << endl;
+    cin>>hardness;
+    return hardness;
 }
 
 void MenuTop(int *level, int helth, int enemyHelth, int score)
@@ -200,7 +218,7 @@ spaceShip CreatMyShip(int score)
     return myShip;
 }
 
-bool ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *mybullet, char (*map)[20][20], int level,vector <string> history)
+bool ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *mybullet, char (*map)[20][20], int level, vector<string> history)
 {
     *error = " ";
     char direction = _getch();
@@ -238,14 +256,13 @@ bool ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet
         // ShowGameHistory(history);
         // SaveFile((*myship), (*enemyShip), level);
         system("cls");
-        cout<<" your game is saved ";
-        for (int  i = 0; i < 19; i++)
+        cout << " your game is saved ";
+        for (int i = 0; i < 19; i++)
         {
-           for (int j = 0; j < 19; j++)
-           {
-            (*map)[i][j]=' ';
-           }
-           
+            for (int j = 0; j < 19; j++)
+            {
+                (*map)[i][j] = ' ';
+            }
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(3000));
         return false;
@@ -350,55 +367,66 @@ void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*
     MenuBut(*error);
 }
 
-void CreatEnemy(int level, spaceShip *enemyShip, char (*map)[20][20], int score)
+void CreatEnemy(int level, spaceShip *enemyShip, char (*map)[20][20], int score, int hardness)
 {
     // to make random number
     srand(time(0)); // to make random number
-    int firstposion = rand() % 9+5;
-    int randEnemy = rand() % 4 + 1;
-
-    if (randEnemy == 1 &&score<10)
+    int firstposion;
+    for (int i = 0; i < hardness; i++)
     {
-        (*enemyShip).helth = 1;
-        (*enemyShip).name = "very tiny";
-    }
-    if (randEnemy == 2&&score<15)
-    {
-        while (firstposion > 19)
+        if (hardness == 1)
         {
-            int firstposion = rand() % 20;
+            firstposion = (rand() % 9) + 5;
         }
-        (*enemyShip).helth = 2;
-        (*enemyShip).name = "tiny";
-    }
-    if (randEnemy == 3&&score<30)
-    {
-        while (firstposion > 17 &&score<60)
+        if (hardness == 2)
         {
-            int firstposion = rand() % 20;
+            firstposion = (rand() % ((i*6)+6))+3;
         }
-        (*enemyShip).helth = 4;
-        (*enemyShip).name = "big";
-    }
-    if (randEnemy == 4)
-    {
-        while (firstposion > 16)
+        int randEnemy = (rand() % 4 )+ 1;
+
+        if (randEnemy == 1 && score < 10)
         {
-            int firstposion = rand() % 20;
+            (*enemyShip).helth = 1;
+            (*enemyShip).name = "very tiny";
         }
-        (*enemyShip).helth = 6;
-        (*enemyShip).name = "very big";
-    }
-
-    (*enemyShip).x = firstposion;
-    (*enemyShip).y = 0;
-
-    for (int i = 0; i < randEnemy; i++)
-    {
-        (*map)[0][firstposion + i] = '*';
-        for (int j = 0; j < randEnemy; j++)
+        if (randEnemy == 2 && score < 15)
         {
-            (*map)[j][firstposion + i] = '*';
+            while (firstposion > 19)
+            {
+                int firstposion = rand() % 20;
+            }
+            (*enemyShip).helth = 2;
+            (*enemyShip).name = "tiny";
+        }
+        if (randEnemy == 3 && score < 30)
+        {
+            while (firstposion > 17 && score < 60)
+            {
+                int firstposion = rand() % 20;
+            }
+            (*enemyShip).helth = 4;
+            (*enemyShip).name = "big";
+        }
+        if (randEnemy == 4)
+        {
+            while (firstposion > 16)
+            {
+                int firstposion = rand() % 20;
+            }
+            (*enemyShip).helth = 6;
+            (*enemyShip).name = "very big";
+        }
+
+        (*enemyShip).x = firstposion;
+        (*enemyShip).y = 0;
+
+        for (int i = 0; i < randEnemy; i++)
+        {
+            (*map)[0][firstposion + i] = '*';
+            for (int j = 0; j < randEnemy; j++)
+            {
+                (*map)[j][firstposion + i] = '*';
+            }
         }
     }
 }
@@ -471,10 +499,8 @@ bool Checkposion(int *myShipX, string *error)
     return true;
 }
 
-void CheckLevel(int *level, spaceShip *enemyShip, char (*map)[20][20], int *score, spaceShip *myship,vector <string> *history)
+void CheckLevel(int *level, spaceShip *enemyShip, char (*map)[20][20], int *score, spaceShip *myship, vector<string> *history,int hardness)
 {
-    if ((*level) < 4)
-    {
         if ((*enemyShip).helth < 0)
         {
             // (*level)++;
@@ -504,11 +530,10 @@ void CheckLevel(int *level, spaceShip *enemyShip, char (*map)[20][20], int *scor
                     }
                 }
             }
-            SaveGameHistory(&(*history),(*enemyShip).name);
-            CreatEnemy(*level, &(*enemyShip), &(*map), *score);
+            SaveGameHistory(&(*history), (*enemyShip).name);
+            CreatEnemy(*level, &(*enemyShip), &(*map), *score,hardness);
         }
-    }
-    *level=(*score/10)+1;
+    *level = (*score / 10) + 1;
     if (*score > 10)
     {
         (*myship).helth = 4;
@@ -528,7 +553,7 @@ void CheckLevel(int *level, spaceShip *enemyShip, char (*map)[20][20], int *scor
         {
             for (int w = 19; w > 14; w--)
             {
-                for (int j = 19; j >0; j--)
+                for (int j = 19; j > 0; j--)
                 {
                     if ((*map)[w][j] == '*')
                     {
@@ -536,9 +561,9 @@ void CheckLevel(int *level, spaceShip *enemyShip, char (*map)[20][20], int *scor
                     }
                 }
             }
-            
+
             (*myship).helth -= 1;
-            CreatEnemy(*level, &(*enemyShip), &(*map), *score);
+            CreatEnemy(*level, &(*enemyShip), &(*map), *score,hardness);
         }
     }
 }
@@ -604,43 +629,47 @@ void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip)
     (*enemyShip).helth = info[8] - '0';
 }
 
-void SaveGameHistory(vector <string> *history,string name)
+void SaveGameHistory(vector<string> *history, string name)
 {
     (*history).push_back(name);
 }
 
-void ShowGameHistory(vector <string> history)
+void ShowGameHistory(vector<string> history)
 {
     int count[4]{0};
     for (int i = 0; i < history.size(); i++)
     {
-        if (history[i]=="very tiny")
+        if (history[i] == "very tiny")
         {
             count[0]++;
         }
-        else if (history[i]=="tiny")
+        else if (history[i] == "tiny")
         {
             count[1]++;
         }
-        else if (history[i]=="big")
+        else if (history[i] == "big")
         {
             count[2]++;
         }
-        else if (history[i]=="very big")
+        else if (history[i] == "very big")
         {
             count[3]++;
         }
     }
-    int total=count[0]+count[1]+count[2]+count[3];
-    cout<<"                           "<<" Game History :"<<endl;
-    cout<<"                           "<<" you Destory => "<<" very tiny"<<count[0]<<" tiny "<<count[1]<<" big "<<count[2]<<"very big"<<count[3]<<endl;
-    cout<<"                           "<<" total distory Enemy :"<<total<<endl;
+    int total = count[0] + count[1] + count[2] + count[3];
+    cout << "                           "
+         << " Game History :" << endl;
+    cout << "                           "
+         << " you Destory => "
+         << " very tiny" << count[0] << " tiny " << count[1] << " big " << count[2] << "very big" << count[3] << endl;
+    cout << "                           "
+         << " total distory Enemy :" << total << endl;
 }
 
-void SaveFilehistory(int level,int score ,int heal )
+void SaveFilehistory(int level, int score, int heal)
 {
     string info;
-    int lineCount=1;
+    int lineCount = 1;
     ifstream myFile("gamehistory.txt");
     while (getline(myFile, info))
     {
@@ -655,8 +684,9 @@ void SaveFilehistory(int level,int score ,int heal )
     // }
     // lins[i+1]="game"+lineCoun+" LeveL :"+level+" Score :"<<score<<"Heal"<<heal;
     myFile.close();
-    ofstream historyFile("gamehistory.txt",std::ios::app);
-    historyFile<<endl<<" game : "<<lineCount<<" LeveL :"<<level<<" Score :"<<score<<"Heal"<<heal<<endl;
+    ofstream historyFile("gamehistory.txt", std::ios::app);
+    historyFile << endl
+                << " game : " << lineCount << " LeveL :" << level << " Score :" << score << "Heal" << heal << endl;
 }
 
 string LoadFile()
