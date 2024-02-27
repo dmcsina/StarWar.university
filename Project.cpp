@@ -31,12 +31,12 @@ struct bullet
 void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20], int gameStatus, int *level, string *error, int *score, int *x, int (*mapSize)[2]);
 int Menu();
 string LoadFile();
-void SaveFile(spaceShip myShip, spaceShip enemyShip, int level);
+void SaveFile(spaceShip myShip, spaceShip enemyShip, int level,int score);
 void Map(char (*map)[20][20], int (*mapSize)[2]);
 void CreatEnemy(int level, spaceShip *enemyShip, char (*map)[20][20], int score, int hardness);
 void MenuTop(int *level, int helth, int enemyHelth, int score);
 void MenuBut(string mesesage);
-bool ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *myBullet, char (*map)[20][20], int level, vector<string> history, int (*mapSize)[2]);
+bool ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *myBullet, char (*map)[20][20], int level, vector<string> history, int (*mapSize)[2],int score);
 void ChaneEnemyPosion(char (*map)[20][20], string name, int (*mapSize)[2]);
 void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20], int (*mapSize)[2]);
 bool CheckGame(spaceShip *myShip, spaceShip *enemyShip, int level);
@@ -89,7 +89,7 @@ int main()
         {
             CheckLevel(&level, &enemyShip, &map, &score, &myShip, &history, hardness, &mapSize);
             CreatMap(&myShip, &enemyShip, &myBullet, &map, choice, &level, &error, &score, &x, &mapSize);
-            flag = ChangePosion(&myShip, &enemyShip, &error, &myBullet, &map, level, history, &mapSize);
+            flag = ChangePosion(&myShip, &enemyShip, &error, &myBullet, &map, level, history, &mapSize,score);
             if (flag == false)
             {
                 break;
@@ -128,13 +128,18 @@ int Menu()
 
 void SizeMenu(int (*mapSize)[2])
 {
-
+    do
+    {
+    system("cls");
     cout << "                                          Chose Size Map : " << endl;
     cout << "                                          Axis X: ";
     cin >> (*mapSize)[0];
     cout << endl;
     cout << "                                          Axis Y: ";
     cin >> (*mapSize)[1];
+        
+    } while ((*mapSize)[0]>20 & (*mapSize)[1]>20);
+    
 }
 
 int DifficultyMenu()
@@ -232,7 +237,7 @@ spaceShip CreatMyShip(int score, int (*mapSize)[2])
     return myShip;
 }
 
-bool ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *mybullet, char (*map)[20][20], int level, vector<string> history, int (*mapSize)[2])
+bool ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *mybullet, char (*map)[20][20], int level, vector<string> history, int (*mapSize)[2],int score)
 {
     *error = " ";
     char direction = _getch();
@@ -267,8 +272,8 @@ bool ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet
         ChaneEnemyPosion(&(*map), (*enemyShip).name, &(*mapSize));
         break;
     case 27:
-        // ShowGameHistory(history);
-        // SaveFile((*myship), (*enemyShip), level);
+        ShowGameHistory(history);
+        SaveFile((*myship), (*enemyShip), level,score);
         system("cls");
         cout << " your game is saved ";
         for (int i = 0; i < (*mapSize)[0]; i++)
@@ -628,10 +633,12 @@ bool CheckGame(spaceShip *myShip, spaceShip *enemyShip, int level)
     return check;
 }
 
-void SaveFile(spaceShip myShip, spaceShip enemyShip, int level)
+void SaveFile(spaceShip myShip, spaceShip enemyShip, int level,int score,int mapeSize[2],char map[20][20])
 {
     string info;
     int number = level;
+    number = number * 100;
+    number = score + number;
     number = number * 100;
     number = myShip.x + number;
     number = number * 10;
@@ -645,6 +652,15 @@ void SaveFile(spaceShip myShip, spaceShip enemyShip, int level)
     info = to_string(number);
     ofstream myFile("game.txt");
     myFile << info;
+    for (int i = 0; i < ; i++)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            
+        }
+        
+    }
+    
 }
 
 void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip)
