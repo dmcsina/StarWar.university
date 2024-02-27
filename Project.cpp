@@ -28,25 +28,23 @@ struct bullet
     int damege = 1;
 };
 
-
-
-void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20], int gameStatus, int *level, string *error, int *score, int *x,int (*mapSize)[2]);
+void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20], int gameStatus, int *level, string *error, int *score, int *x, int (*mapSize)[2]);
 int Menu();
 string LoadFile();
 void SaveFile(spaceShip myShip, spaceShip enemyShip, int level);
-void Map(char (*map)[20][20],int (*mapSize)[2]);
+void Map(char (*map)[20][20], int (*mapSize)[2]);
 void CreatEnemy(int level, spaceShip *enemyShip, char (*map)[20][20], int score, int hardness);
 void MenuTop(int *level, int helth, int enemyHelth, int score);
 void MenuBut(string mesesage);
-bool ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *myBullet, char (*map)[20][20], int level, vector<string> history,int (*mapSize)[2]);
-void ChaneEnemyPosion(char (*map)[20][20], string name,int (*mapSize)[2]);
-void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20],int (*mapSize)[2]);
+bool ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *myBullet, char (*map)[20][20], int level, vector<string> history, int (*mapSize)[2]);
+void ChaneEnemyPosion(char (*map)[20][20], string name, int (*mapSize)[2]);
+void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20], int (*mapSize)[2]);
 bool CheckGame(spaceShip *myShip, spaceShip *enemyShip, int level);
 void Prosses(string info, int *level, spaceShip *myShip, spaceShip *enemyShip);
-bool Checkposion(int *myShipX, string *error,int (*mapSize)[2]);
-void CheckLevel(int *level, spaceShip *enemyShip, char (*map)[20][20], int *score, spaceShip *myship, vector<string> *history,int hardness,int (*mapSize)[2]);
+bool Checkposion(int *myShipX, string *error, int (*mapSize)[2]);
+void CheckLevel(int *level, spaceShip *enemyShip, char (*map)[20][20], int *score, spaceShip *myship, vector<string> *history, int hardness, int (*mapSize)[2]);
 void Low_offHelth(spaceShip *enemyShip, char (*map)[20][20]);
-spaceShip CreatMyShip(int score,int (*mapSize)[2]);
+spaceShip CreatMyShip(int score, int (*mapSize)[2]);
 int DifficultyMenu();
 void SaveGameHistory(vector<string> *history, string name);
 void ShowGameHistory(vector<string> history);
@@ -85,20 +83,20 @@ int main()
             Prosses(info, &level, &myShip, &enemyShip);
         }
         CreatEnemy(level, &enemyShip, &map, score, hardness);
-        myShip = CreatMyShip(score,&mapSize);
+        myShip = CreatMyShip(score, &mapSize);
         // cout<<"level"<<level<<endl<<"XM"<<myShip.x<<endl<<"helth"<<myShip.helth<<endl<<"XE"<<enemyShip.x<<endl<<"YE"<<enemyShip.y<<endl<<"HE"<<enemyShip.helth;
         while (flag)
         {
-            CheckLevel(&level, &enemyShip, &map, &score, &myShip, &history,hardness,&mapSize);
-            CreatMap(&myShip, &enemyShip, &myBullet, &map, choice, &level, &error, &score, &x,&mapSize);
-            flag = ChangePosion(&myShip, &enemyShip, &error, &myBullet, &map, level, history,&mapSize);
+            CheckLevel(&level, &enemyShip, &map, &score, &myShip, &history, hardness, &mapSize);
+            CreatMap(&myShip, &enemyShip, &myBullet, &map, choice, &level, &error, &score, &x, &mapSize);
+            flag = ChangePosion(&myShip, &enemyShip, &error, &myBullet, &map, level, history, &mapSize);
             if (flag == false)
             {
                 break;
             }
 
             choice = 0;
-            flag = CheckGame(&myShip, &enemyShip, level);
+            // flag = CheckGame(&myShip, &enemyShip, level);
             cout << "heeelsth" << myShip.helth;
         }
     }
@@ -131,12 +129,12 @@ int Menu()
 void SizeMenu(int (*mapSize)[2])
 {
 
-    cout<<"                                          Chose Size Map : "<<endl;
-    cout<<"                                          Axis X: ";
-    cin>>(*mapSize)[0];
-    cout<<endl;
-    cout<<"                                          Axis Y: ";
-    cin>>(*mapSize)[1];
+    cout << "                                          Chose Size Map : " << endl;
+    cout << "                                          Axis X: ";
+    cin >> (*mapSize)[0];
+    cout << endl;
+    cout << "                                          Axis Y: ";
+    cin >> (*mapSize)[1];
 }
 
 int DifficultyMenu()
@@ -147,7 +145,7 @@ int DifficultyMenu()
     cout << "                                                                                | 1-Easy (Spwan One enemy)    |" << endl;
     cout << "                                                                                | 1-Hard (Spawn two enemy)    |" << endl;
     cout << "                                                                                -------------------------------" << endl;
-    cin>>hardness;
+    cin >> hardness;
     return hardness;
 }
 
@@ -173,20 +171,20 @@ void MenuBut(string mesesage)
     cout << RED_TEXT << "                                                                        " << mesesage << White_TEXT;
 }
 
-void Map(char (*map)[20][20],int (*mapSize)[2])
+void Map(char (*map)[20][20], int (*mapSize)[2])
 {
     // to make a table
-    for (int i = 0; i < (*mapSize)[0]; i++)
+    for (int i = 0; i < (*mapSize)[1]; i++)
     {
         cout << "                                               ";
 
-        for (int j = 0; j < (*mapSize)[1]; j++)
+        for (int j = 0; j < (*mapSize)[0]; j++)
         {
             cout << Cyan_TEXT " ---";
         }
         cout << endl;
         cout << "                                               ";
-        for (int k = 0; k <= (*mapSize)[1]; k++)
+        for (int k = 0; k <= (*mapSize)[0]; k++)
         {
             if (k == 20)
                 cout << "|";
@@ -199,19 +197,19 @@ void Map(char (*map)[20][20],int (*mapSize)[2])
         cout << endl;
     }
     cout << "                                               ";
-    for (int i = 0; i < (*mapSize)[1]; i++)
+    for (int i = 0; i < (*mapSize)[0]; i++)
         cout << " ---";
     cout << endl;
 }
 
-spaceShip CreatMyShip(int score,int (*mapSize)[2])
+spaceShip CreatMyShip(int score, int (*mapSize)[2])
 {
     spaceShip myShip;
     if (score == 0)
     {
         srand(time(0));
-        myShip.x = (rand() % 7)+4;
-        myShip.y = 14;
+        myShip.x = (rand() % 7) + 4;
+        myShip.y = (*mapSize)[1] - 1;
         myShip.helth = 3;
         myShip.damege = 1;
         myShip.name = "jonior";
@@ -221,20 +219,20 @@ spaceShip CreatMyShip(int score,int (*mapSize)[2])
         myShip.helth = 4;
         myShip.damege = 2;
         myShip.name = "vice captain";
-        myShip.y = (*mapSize)[0];
+        myShip.y = (*mapSize)[1] - 1;
     }
     if (score > 20)
     {
         myShip.helth = 5;
         myShip.damege = 3;
         myShip.name = "captain";
-        myShip.y = (*mapSize)[0];
+        myShip.y = (*mapSize)[1] - 1;
     }
 
-    return  myShip;
+    return myShip;
 }
 
-bool ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *mybullet, char (*map)[20][20], int level, vector<string> history,int (*mapSize)[2])
+bool ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet *mybullet, char (*map)[20][20], int level, vector<string> history, int (*mapSize)[2])
 {
     *error = " ";
     char direction = _getch();
@@ -243,30 +241,30 @@ bool ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet
     case 'd': // move right
     case 'D':
     {
-        Attack(&(*myship), &(*enemyShip), &(*mybullet), &(*map),&(*mapSize));
+        Attack(&(*myship), &(*enemyShip), &(*mybullet), &(*map), &(*mapSize));
+        if (Checkposion(&((*myship).x), &(*error), &(*mapSize)))
+        {
             (*myship).x += 1;
-        // if (Checkposion(&((*myship).x), &(*error) , &(*mapSize)))
-        // {
-        //     ChaneEnemyPosion(&(*map), (*enemyShip).name,&(*mapSize));
-        // }
+            ChaneEnemyPosion(&(*map), (*enemyShip).name, &(*mapSize));
+        }
     }
     break;
     case 'a': // move left
     case 'A':
     {
-            (*myship).x -=  1;
-        Attack(&(*myship), &(*enemyShip), &(*mybullet), &(*map),&(*mapSize));
-        // if (Checkposion(&((*myship).x), &(*error),&(*mapSize)))
-        // {
-        //     ChaneEnemyPosion(&(*map), (*enemyShip).name,&(*mapSize));
-        // }
+        Attack(&(*myship), &(*enemyShip), &(*mybullet), &(*map), &(*mapSize));
+        if (Checkposion(&((*myship).x), &(*error), &(*mapSize)))
+        {
+            (*myship).x -= 1;
+            ChaneEnemyPosion(&(*map), (*enemyShip).name, &(*mapSize));
+        }
     }
     break;
 
     case 'w':
     case 'W':
-        Attack(&(*myship), &(*enemyShip), &(*mybullet), &(*map),&(*mapSize));
-        ChaneEnemyPosion(&(*map), (*enemyShip).name,&(*mapSize));
+        Attack(&(*myship), &(*enemyShip), &(*mybullet), &(*map), &(*mapSize));
+        ChaneEnemyPosion(&(*map), (*enemyShip).name, &(*mapSize));
         break;
     case 27:
         // ShowGameHistory(history);
@@ -290,11 +288,11 @@ bool ChangePosion(spaceShip *myship, spaceShip *enemyShip, string *error, bullet
     return true;
 }
 
-void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20],int (*mapSize)[2])
+void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20], int (*mapSize)[2])
 {
     bool flag = true;
     (*myBullet).x = (*myShip).x;
-    (*myBullet).y = ((*mapSize)[0])-1;
+    (*myBullet).y = ((*mapSize)[1]) - 2;
     // while (flag == true)
     // {
     // if ((*map)[(*myBullet).y][(*myBullet).x] == '*')
@@ -303,14 +301,17 @@ void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*ma
     //     (*myBullet).y += 1;
     //     flag = false;
     // }
-    for (int i = 0; i < (*mapSize)[0]; i++)
+    for (int i = 0; i < ((*mapSize)[0] - 1); i++)
     {
-        for (int j = 0; j < (*mapSize)[1]; j++)
+        if ((*map)[0][i] == '^')
         {
-            if (i == 0)
-            {
-                (*map)[0][j] == ' ';
-            }
+            (*map)[0][i] = ' ';
+        }
+    }
+    for (int i = 1; i < ((*mapSize)[1] - 1); i++)
+    {
+        for (int j = 1; j < ((*mapSize)[0] - 1); j++)
+        {
 
             if ((*map)[i][j] == '^')
             {
@@ -336,13 +337,13 @@ void Attack(spaceShip *myShip, spaceShip *enemyShip, bullet *myBullet, char (*ma
     // }
 }
 
-void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20], int gameStatus, int *level, string *error, int *score, int *x,int (*mapSize)[2])
+void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*map)[20][20], int gameStatus, int *level, string *error, int *score, int *x, int (*mapSize)[2])
 {
     system("cls");
     int xe;
-    for (int i = 0; i <(*mapSize)[0] ; i++)
+    for (int i = 0; i < (*mapSize)[1]; i++)
     {
-        for (int j = 0; j < (*mapSize)[1]; j++)
+        for (int j = 0; j < (*mapSize)[0]; j++)
         {
             if ((*map)[i][j] != '*' && (*map)[i][j] != '^')
             {
@@ -354,7 +355,7 @@ void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*
     srand(time(0)); // to make random number
     if (gameStatus == 1)
     {
-        (*myship).x = (rand() % 7)+4;
+        (*myship).x = (rand() % 7) + 4;
     }
     // CheckShip(&(*myship));
     if (gameStatus == 2)
@@ -364,21 +365,21 @@ void CreatMap(spaceShip *myship, spaceShip *enemyShip, bullet *myBullet, char (*
     }
     if ((*myship).name == "jonior")
     {
-        (*map)[(*mapSize)[0]-1][(*myship).x] = '#';
+        (*map)[(*mapSize)[1] - 1][(*myship).x] = '#';
     }
     if ((*myship).name == "vice captain")
     {
-        (*map)[(*mapSize)[0]][(*myship).x] = '%';
+        (*map)[(*mapSize)[1] - 1][(*myship).x] = '%';
     }
     if ((*myship).name == "captain")
     {
-        (*map)[(*mapSize)[0]][(*myship).x] = '$';
+        (*map)[(*mapSize)[1] - 1][(*myship).x] = '$';
     }
 
     // (*map)[19][(*myship).x] = '#';
 
     MenuTop(level, (*myship).helth, (*enemyShip).helth, (*score));
-    Map(&(*map),&(*mapSize));
+    Map(&(*map), &(*mapSize));
     MenuBut(*error);
 }
 
@@ -395,16 +396,34 @@ void CreatEnemy(int level, spaceShip *enemyShip, char (*map)[20][20], int score,
         }
         if (hardness == 2)
         {
-            firstposion = (rand() % ((i*6)+6))+3;
+            firstposion = (rand() % ((i * 6) + 6)) + 3;
         }
-        int randEnemy = (rand() % 4 )+ 1;
+        int sina=4;
+        if (score>0)
+        {
+            sina=1;
+        }
+        if (score>10)
+        {
+            sina=2;
+        }
+        if (score>20)
+        {
+            sina=3;
+        }
+        if (score>30)
+        {
+            sina=4;
+        }
+        
+        int randEnemy = (rand() % sina) + 1;
 
-        if (randEnemy == 1 && score < 10)
+        if (randEnemy == 1 )
         {
             (*enemyShip).helth = 1;
             (*enemyShip).name = "very tiny";
         }
-        if (randEnemy == 2 && score < 15)
+        if (randEnemy == 2 )
         {
             // while (firstposion > 19)
             // {
@@ -413,7 +432,7 @@ void CreatEnemy(int level, spaceShip *enemyShip, char (*map)[20][20], int score,
             (*enemyShip).helth = 2;
             (*enemyShip).name = "tiny";
         }
-        if (randEnemy == 3 && score < 30)
+        if (randEnemy == 3 )
         {
             // while (firstposion > 17 && score < 60)
             // {
@@ -446,7 +465,7 @@ void CreatEnemy(int level, spaceShip *enemyShip, char (*map)[20][20], int score,
     }
 }
 
-void ChaneEnemyPosion(char (*map)[20][20], string name,int (*mapSize)[2])
+void ChaneEnemyPosion(char (*map)[20][20], string name, int (*mapSize)[2])
 {
     int count;
     if (name == "very tiny")
@@ -467,9 +486,9 @@ void ChaneEnemyPosion(char (*map)[20][20], string name,int (*mapSize)[2])
     }
 
     int counter = 0;
-    for (int i = 0; i < (*mapSize)[0]; i++)
+    for (int i = 0; i < (*mapSize)[1]; i++)
     {
-        for (int j = 0; j < (*mapSize)[1]; j++)
+        for (int j = 0; j < (*mapSize)[0]; j++)
         {
             if ((*map)[i][j] == '*')
             {
@@ -496,15 +515,15 @@ void Low_offEnemyHelth(spaceShip *myShip, char (*map)[20][20])
     }
 }
 
-bool Checkposion(int *myShipX, string *error,int (*mapSize)[2])
+bool Checkposion(int *myShipX, string *error, int (*mapSize)[2])
 {
-    if (*myShipX >=((*mapSize)[0]))
+    if (*myShipX >= ((*mapSize)[0] - 1))
     {
         *myShipX -= 1;
         *error = " You Can't Go RIGHT Anymore";
         return false;
     }
-    if (*myShipX <= (*mapSize)[0])
+    if (*myShipX <= 0)
     {
         *myShipX += 1;
         *error = " You Can't Go LEFT Anymore";
@@ -514,61 +533,62 @@ bool Checkposion(int *myShipX, string *error,int (*mapSize)[2])
     return true;
 }
 
-void CheckLevel(int *level, spaceShip *enemyShip, char (*map)[20][20], int *score, spaceShip *myship, vector<string> *history,int hardness,int (*mapSize)[2])
+void CheckLevel(int *level, spaceShip *enemyShip, char (*map)[20][20], int *score, spaceShip *myship, vector<string> *history, int hardness, int (*mapSize)[2])
 {
-        if ((*enemyShip).helth < 0)
+    if ((*enemyShip).helth <= 0)
+    {
+        // (*level)++;
+        if ((*enemyShip).name == "very tiny")
         {
-            // (*level)++;
-            if ((*enemyShip).name == "very tiny")
+            *score += 2;
+        }
+        if ((*enemyShip).name == "tiny")
+        {
+            *score += 4;
+        }
+        if ((*enemyShip).name == "big")
+        {
+            *score += 6;
+        }
+        if ((*enemyShip).name == "very big")
+        {
+            *score += 8;
+        }
+        for (int i = 0; i < (*mapSize)[1]; i++)
+        {
+            for (int j = 0; j < (*mapSize)[0]; j++)
             {
-                *score += 2;
-            }
-            if ((*enemyShip).name == "tiny")
-            {
-                *score += 4;
-            }
-            if ((*enemyShip).name == "big")
-            {
-                *score += 6;
-            }
-            if ((*enemyShip).name == "very big")
-            {
-                *score += 8;
-            }
-            for (int i = 0; i <(*mapSize)[0] ; i++)
-            {
-                for (int j = 0; j <(*mapSize)[1]; j++)
+                if ((*map)[i][j] == '*')
                 {
-                    if ((*map)[i][j] == '*')
-                    {
-                        (*map)[i][j] = ' ';
-                    }
+                    (*map)[i][j] = ' ';
                 }
             }
-            SaveGameHistory(&(*history), (*enemyShip).name);
-            CreatEnemy(*level, &(*enemyShip), &(*map), *score,hardness);
         }
+        (*enemyShip).helth = 0;
+        SaveGameHistory(&(*history), (*enemyShip).name);
+        CreatEnemy(*level, &(*enemyShip), &(*map), *score, hardness);
+    }
     *level = (*score / 10) + 1;
-    if (*score > 10)
+    if (*score > 20)
     {
         (*myship).helth = 4;
         (*myship).damege = 2;
         (*myship).name = "vice captain";
     }
-    if (*score > 15)
+    if (*score > 40)
     {
         (*myship).helth = 5;
         (*myship).damege = 3;
         (*myship).name = "captain";
     }
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < (*mapSize)[1] - 1; i++)
     {
 
-        if ((*map)[((*mapSize)[0])-1][i] == '*')
+        if ((*map)[((*mapSize)[1]) - 1][i] == '*')
         {
-            for (int w = ((*mapSize)[0])-1; w > ((*mapSize)[0])-4; w--)
+            for (int w = ((*mapSize)[1]) - 1; w > ((*mapSize)[1]) - 5; w--)
             {
-                for (int j = ((*mapSize)[1]); j > 0; j--)
+                for (int j = ((*mapSize)[0]); j > 0; j--)
                 {
                     if ((*map)[w][j] == '*')
                     {
@@ -578,7 +598,7 @@ void CheckLevel(int *level, spaceShip *enemyShip, char (*map)[20][20], int *scor
             }
 
             (*myship).helth -= 1;
-            CreatEnemy(*level, &(*enemyShip), &(*map), *score,hardness);
+            CreatEnemy(*level, &(*enemyShip), &(*map), *score, hardness);
         }
     }
 }
