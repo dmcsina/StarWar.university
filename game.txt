@@ -1,1 +1,29 @@
- game : 1 LeveL :1 Score :0Heal0
+level:1
+score:4
+myshipX:9
+helth:3
+myshipname:jonior
+myshipdamege:1
+enemyhelth:1
+enemyshipx:5
+enemyshipy:0
+enemyshipname:very tiny
+mapx:15
+mapy:20
+bolet1:06
+bolet2:16
+bolet3:26
+bolet4:36
+bolet5:46
+bolet6:56
+bolet7:66
+bolet8:76
+bolet9:86
+bolet10:97
+bolet11:108
+bolet12:139
+bolet13:149
+bolet14:159
+bolet15:169
+bolet16:179
+bolet17:189
